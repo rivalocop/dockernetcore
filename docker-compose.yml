@@ -1,14 +1,10 @@
-version: "3"
+version: '3.4'
 
 services:
-  web:
-    build: .
-    ports:
-      - "3000:80"
-    depends_on:
-      - sql.data
-  sql.data:
-    image: "mcr.microsoft.com/mssql/server:2017-latest-ubuntu"
-    environment:
-      - SA_PASSWORD=Your_password123
-      - ACCEPT_EULA=Y
+  misa.moviestore:
+    image: ${DOCKER_REGISTRY-}misamoviestore
+    build:
+      context: .
+      dockerfile: Dockerfile
+  misa.data:
+    image: microsoft/mssql-server-linux:2017-latest
