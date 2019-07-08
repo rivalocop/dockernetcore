@@ -1,4 +1,4 @@
-version: '3.4'
+version: "3.5"
 
 services:
   misa.moviestore:
@@ -6,10 +6,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
+      - SQLSERVER_HOST=misa.data
     ports:
       - "5103:80"
+    deploy:
+      restart_policy:
+        condition: on-failure
     depends_on:
       - misa.data
+    networks:
+      - misa.net
   misa.data:
     container_name: misa.data
     environment:
@@ -17,3 +23,9 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "5433:1433"
+    networks: 
+      - misa.net
+networks: 
+  misa.net:
+    name: misa.net
+    driver: bridge
